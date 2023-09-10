@@ -1,7 +1,7 @@
 package com.hanniel.springboot.cruddemo.rest;
 
-import com.hanniel.springboot.cruddemo.dao.EmployeeDAO;
 import com.hanniel.springboot.cruddemo.entity.Employee;
+import com.hanniel.springboot.cruddemo.service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,14 +11,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class EmployeeRestController {
-    private final EmployeeDAO employeeDAO;
 
-    public EmployeeRestController(EmployeeDAO theEmployeeDAO){
-            employeeDAO = theEmployeeDAO;
+    private final EmployeeService employeeService;
+
+    public EmployeeRestController(EmployeeService theEmployeeService){
+        employeeService = theEmployeeService;
     }
 
     @GetMapping("/employees")
     public List<Employee> findAll(){
-        return employeeDAO.findAll();
+        return employeeService.findAll();
     }
 }
