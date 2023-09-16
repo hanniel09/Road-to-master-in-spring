@@ -1,6 +1,8 @@
 package com.luv2code.springboot.thymeleafdemo.controller;
 
 import com.luv2code.springboot.thymeleafdemo.entity.Employee;
+import com.luv2code.springboot.thymeleafdemo.service.EmployeeService;
+import com.luv2code.springboot.thymeleafdemo.service.EmployeeServiceImpl;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,33 +16,15 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	// load employee data
+	private EmployeeService employeeService;
 
-	private List<Employee> theEmployees;
-
-	@PostConstruct
-	private void loadData() {
-
-		// create employees
-		Employee emp1 = new Employee("Leslie", "Andrews", "leslie@luv2code.com");
-		Employee emp2 = new Employee("Emma", "Baumgarten", "emma@luv2code.com");
-		Employee emp3 = new Employee("Avani", "Gupta", "avani@luv2code.com");
-
-		// create the list
-		theEmployees = new ArrayList<>();
-
-		// add to the list
-		theEmployees.add(emp1);
-		theEmployees.add(emp2);
-		theEmployees.add(emp3);
+	public EmployeeController(EmployeeService theEmployeeService){
+		employeeService = theEmployeeService;
 	}
-
-	// add mapping for "/list"
 
 	@GetMapping("/list")
 	public String listEmployees(Model theModel) {
-
-		// add to the spring model
+		List<Employee> theEmployees = employeeService.findAll();
 		theModel.addAttribute("employees", theEmployees);
 
 		return "list-employees";
