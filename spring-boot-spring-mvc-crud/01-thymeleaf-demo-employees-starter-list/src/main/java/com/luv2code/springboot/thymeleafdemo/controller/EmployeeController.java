@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	private EmployeeService employeeService;
+	private final EmployeeService employeeService;
 
 	public EmployeeController(EmployeeService theEmployeeService){
 		employeeService = theEmployeeService;
@@ -25,6 +25,16 @@ public class EmployeeController {
 		theModel.addAttribute("employees", theEmployees);
 
 		return "employees/list-employees";
+	}
+
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd(Model theModel){
+
+		Employee theEmployee = new Employee();
+
+		theModel.addAttribute("employee", theEmployee);
+
+		return "employees/employee-form";
 	}
 }
 
