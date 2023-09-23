@@ -39,6 +39,5 @@ public class CruddemoApplication {
 		appDAO.save(tempInstructor);
 
 		System.out.println("Done!");
-		System.out.println("Teste!");
 	}
 }
