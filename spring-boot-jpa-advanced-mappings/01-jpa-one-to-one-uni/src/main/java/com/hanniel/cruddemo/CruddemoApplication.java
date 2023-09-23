@@ -36,5 +36,8 @@ public class CruddemoApplication {
 		tempInstructor.setInstructorDetail(tempInstructorDetail);
 
 		System.out.println("Saving instructor: " + tempInstructor);
+		appDAO.save(tempInstructor);
+
+		System.out.println("Done!");
 	}
 }
