@@ -1,6 +1,7 @@
 package com.hanniel.cruddemo;
 
 import com.hanniel.cruddemo.dao.AppDAO;
+import com.hanniel.cruddemo.entity.Course;
 import com.hanniel.cruddemo.entity.Instructor;
 import com.hanniel.cruddemo.entity.InstructorDetail;
 import org.springframework.boot.CommandLineRunner;
@@ -45,7 +46,14 @@ public class CruddemoApplication {
 
 		tempInstructor.setInstructorDetail(tempInstructorDetail);
 
+		Course tempCourse1 = new Course("Air guitar - The ultimate guide");
+		Course tempCourse2 = new Course("The PinBall MasterClass");
+
+		tempInstructor.add(tempCourse1);
+		tempInstructor.add(tempCourse2);
+
 		System.out.println("Saving instructor: " + tempInstructor);
+		System.out.println("The courses: " + tempInstructor.getCourses());
 		appDAO.save(tempInstructor);
 
 		System.out.println("Done!");
