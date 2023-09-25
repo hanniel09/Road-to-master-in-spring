@@ -20,15 +20,35 @@ public class CruddemoApplication {
 	public CommandLineRunner commandLineRunner(AppDAO appDAO){
 		return runner -> {
 //			createInstructor(appDAO);
-//
+
 //			findInstrutor(appDAO);
-//
+
 //			deleteInstructor(appDAO);
 
 //			findInstrutorDetail(appDAO);
-//
-			deleteInstructorDetail(appDAO);
+
+//			deleteInstructorDetail(appDAO);
+
+			createInstructorWithCourses(appDAO);
 		};
+	}
+
+	private void createInstructorWithCourses(AppDAO appDAO) {
+		Instructor tempInstructor =
+				new Instructor("Susan", "Public", "Susan@Public.com");
+
+		InstructorDetail tempInstructorDetail =
+				new InstructorDetail(
+						"http://www.youtube.com/codes",
+						"Read books"
+				);
+
+		tempInstructor.setInstructorDetail(tempInstructorDetail);
+
+		System.out.println("Saving instructor: " + tempInstructor);
+		appDAO.save(tempInstructor);
+
+		System.out.println("Done!");
 	}
 
 	private void deleteInstructorDetail(AppDAO appDAO) {
