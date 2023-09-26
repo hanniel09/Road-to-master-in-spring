@@ -1,7 +1,10 @@
 package com.hanniel.cruddemo.dao;
 
+import com.hanniel.cruddemo.entity.Course;
 import com.hanniel.cruddemo.entity.Instructor;
 import com.hanniel.cruddemo.entity.InstructorDetail;
+
+import java.util.List;
 
 public interface AppDAO {
     void save(Instructor theInstructor);
@@ -13,4 +16,6 @@ public interface AppDAO {
     InstructorDetail findInstructorDetailById(int theId);
 
     void deleteInstructorDetailById(int theId);
+
+    List<Course> findCoursesByInstructorId(int theId);
 }
