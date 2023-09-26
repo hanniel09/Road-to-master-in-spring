@@ -40,6 +40,13 @@ public class CruddemoApplication {
 
 		int theId = 1;
 		System.out.println("Finding instructor id: ");
+
+		Instructor tempInstructor = appDAO.findInstructorById(theId);
+
+		System.out.println("tempInstructor: " + tempInstructor);
+		System.out.println("the associated courses: " + tempInstructor.getCourses());
+
+		System.out.println("Done!");
 	}
 
 	private void createInstructorWithCourses(AppDAO appDAO) {
