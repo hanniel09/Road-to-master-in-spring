@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class AppDaoImpl implements AppDAO{
+public class AppDaoImpl implements AppDAO {
 
     private final EntityManager entityManager;
 
     @Autowired
-    public AppDaoImpl(EntityManager entityManager){
+    public AppDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -69,8 +69,8 @@ public class AppDaoImpl implements AppDAO{
     public Instructor findInstructorByIdJoinFetch(int theId) {
         TypedQuery<Instructor> query = entityManager.createQuery(
                 "select i from Instructor i "
-                + "JOIN FETCH i.courses"
-                + "where i.id = :data", Instructor.class
+                        + "JOIN FETCH i.courses"
+                        + "where i.id = :data", Instructor.class
         );
 
         query.setParameter("data", theId);
