@@ -8,26 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="course")
+@Table(name = "course")
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "title")
     private String title;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="instructor_id")
+    @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private List<Review> reviews;
 
-    public Course(){
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+            name = "course_student",
+            joinColumns = @JoinColumn(name= "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<Student> students;
+
+    public Course() {
 
     }
 
@@ -68,11 +77,27 @@ public class Course {
     }
 
     public void addReview(Review theReview) {
-        if(reviews == null) {
+        if (reviews == null) {
             reviews = new ArrayList<>();
         }
 
         reviews.add(theReview);
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public void addStudent(Student theStudent) {
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+
+        students.add(theStudent);
     }
 
     @Override
