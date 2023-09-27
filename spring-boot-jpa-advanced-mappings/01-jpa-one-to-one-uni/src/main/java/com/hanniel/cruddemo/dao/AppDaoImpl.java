@@ -39,7 +39,7 @@ public class AppDaoImpl implements AppDAO {
 
         List<Course> courses = tempInstructor.getCourses();
 
-        for(Course tempCourse : courses){
+        for (Course tempCourse : courses) {
             tempCourse.setInstructor(null);
         }
 
@@ -116,5 +116,17 @@ public class AppDaoImpl implements AppDAO {
     public void save(Course theCourse) {
         entityManager.persist(theCourse);
 
+    }
+
+    @Override
+    public Course findCourseAndReviewsByCourseId(int theId) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c "
+                        + "JOIN FETCH c.reviews "
+                        + "where c.id = :data ", Course.class
+        );
+        query.setParameter("data", theId);
+
+        return query.getSingleResult();
     }
 }

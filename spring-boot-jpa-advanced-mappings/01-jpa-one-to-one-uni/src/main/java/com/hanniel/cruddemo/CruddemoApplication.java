@@ -23,8 +23,20 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(AppDAO appDAO){
 		return runner -> {
-			createCourseAndReviews(appDAO);
+//			createCourseAndReviews(appDAO);
+
+			findCourseAndReviews(appDAO);
 		};
+	}
+
+	private void findCourseAndReviews(AppDAO appDAO) {
+		int theId = 10;
+		Course tempCourse = appDAO.findCourseAndReviewsByCourseId(theId);
+		System.out.println(tempCourse);
+
+		System.out.println(tempCourse.getReviews());
+
+		System.out.println("Done!");
 	}
 
 	private void createCourseAndReviews(AppDAO appDAO) {
