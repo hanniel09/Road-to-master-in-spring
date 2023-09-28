@@ -1,10 +1,7 @@
 package com.hanniel.cruddemo;
 
 import com.hanniel.cruddemo.dao.AppDAO;
-import com.hanniel.cruddemo.entity.Course;
-import com.hanniel.cruddemo.entity.Instructor;
-import com.hanniel.cruddemo.entity.InstructorDetail;
-import com.hanniel.cruddemo.entity.Review;
+import com.hanniel.cruddemo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,7 +21,25 @@ public class CruddemoApplication {
 	public CommandLineRunner commandLineRunner(AppDAO appDAO){
 		return runner -> {
 
+			createCourseAndStudents(appDAO);
 		};
+	}
+
+	private void createCourseAndStudents(AppDAO appDAO) {
+		Course tempCourse = new Course("Pacman - How to score one million points");
+
+		Student tempStudent1 = new Student("John", "Doe", "john@doe.com");
+		Student tempStudent2 = new Student("Mary", "Public", "mary@public.com");
+
+		tempCourse.addStudent(tempStudent1);
+		tempCourse.addStudent(tempStudent2);
+
+		System.out.println("Saving the course: " + tempCourse);
+		System.out.println("associated students: " + tempCourse.getStudents());
+
+		appDAO.save(tempCourse);
+
+		System.out.println("Done!");
 	}
 
 	private void deleteCourseAndReviews(AppDAO appDAO) {
