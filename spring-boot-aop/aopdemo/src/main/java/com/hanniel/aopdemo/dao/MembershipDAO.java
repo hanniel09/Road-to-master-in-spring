@@ -1,5 +1,5 @@
 package com.hanniel.aopdemo.dao;
 
 public interface MembershipDAO {
-    void addAccount();
+    void addSillyMember();
 }
