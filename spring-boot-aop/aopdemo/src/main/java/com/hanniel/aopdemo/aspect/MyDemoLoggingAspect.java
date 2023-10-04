@@ -2,21 +2,31 @@ package com.hanniel.aopdemo.aspect;
 
 import com.hanniel.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Locale;
 
 @Aspect
 @Component
 @Order(2)
 public class MyDemoLoggingAspect {
-//    @Before("execution(public void add*())")
+
+    @AfterThrowing(
+            pointcut = "execution(* com.hanniel.aopdemo.dao.AccountDAO.findAccounts(..))",
+            throwing = "theExc"
+    )
+    public void afterThrowingFIndAccountsAdvice(
+            JoinPoint theJoinPoint, Throwable theExc
+    ){
+        String method = theJoinPoint.getSignature().toShortString();
+        System.out.println("\n========>>> Executing @AfterThrowing on Method: " + method);
+
+        System.out.println("\n========>>> The Exception is: " + theExc);
+    }
 
     @AfterReturning(
             pointcut = "execution(* com.hanniel.aopdemo.dao.AccountDAO.findAccounts(..))",
