@@ -25,8 +25,16 @@ public class MyDemoLoggingAspect {
 
         long begin = System.currentTimeMillis();
 
-        Object result = theProceedingJoinPoint.proceed();
+        Object result = null;
 
+        try {
+          result = theProceedingJoinPoint.proceed();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+
+            throw e;
+        }
         long end = System.currentTimeMillis();
 
         long duration = end - begin;
