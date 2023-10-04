@@ -2,6 +2,7 @@ package com.hanniel.aopdemo.aspect;
 
 import com.hanniel.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -15,6 +16,25 @@ import java.util.Locale;
 @Order(2)
 public class MyDemoLoggingAspect {
 
+    @Around("execution(* com.hanniel.aopdemo.service.*.getFortune(..))")
+    public Object aroundGetFortune(
+            ProceedingJoinPoint theProceedingJoinPoint
+    ) throws Throwable {
+        String method = theProceedingJoinPoint.getSignature().toShortString();
+        System.out.println("\n========>>> Executing @Around on Method: " + method);
+
+        long begin = System.currentTimeMillis();
+
+        Object result = theProceedingJoinPoint.proceed();
+
+        long end = System.currentTimeMillis();
+
+        long duration = end - begin;
+        System.out.println("\n======> Duration: " + duration / 1000.0 + " seconds");
+
+        return result;
+    }
+
     @After("execution(* com.hanniel.aopdemo.dao.AccountDAO.findAccounts(..))")
     public void afterFinallyFindAccountsAdvice(JoinPoint theJoinPoint) {
         String method = theJoinPoint.getSignature().toShortString();
@@ -27,7 +47,7 @@ public class MyDemoLoggingAspect {
     )
     public void afterThrowingFIndAccountsAdvice(
             JoinPoint theJoinPoint, Throwable theExc
-    ){
+    ) {
         String method = theJoinPoint.getSignature().toShortString();
         System.out.println("\n========>>> Executing @AfterThrowing on Method: " + method);
 
@@ -37,19 +57,19 @@ public class MyDemoLoggingAspect {
     @AfterReturning(
             pointcut = "execution(* com.hanniel.aopdemo.dao.AccountDAO.findAccounts(..))",
             returning = "result")
-    public void afterReturningFindAccountsAdvice(JoinPoint theJoinPoint, List<Account> result){
-            String method = theJoinPoint.getSignature().toShortString();
-            System.out.println("\n========>>> Executing @AfterRunning on Method: " + method);
+    public void afterReturningFindAccountsAdvice(JoinPoint theJoinPoint, List<Account> result) {
+        String method = theJoinPoint.getSignature().toShortString();
+        System.out.println("\n========>>> Executing @AfterRunning on Method: " + method);
 
-            System.out.println("\n========>>> Executing @AfterRunning on Method: " + result);
+        System.out.println("\n========>>> Executing @AfterRunning on Method: " + result);
 
-            convertAccountNamesToUpperCase(result);
+        convertAccountNamesToUpperCase(result);
 
-            System.out.println("\n========>>> Executing @AfterRunning on Method: " + result);
+        System.out.println("\n========>>> Executing @AfterRunning on Method: " + result);
     }
 
     private void convertAccountNamesToUpperCase(List<Account> result) {
-        for (Account tempAccount : result){
+        for (Account tempAccount : result) {
             String theUpperCase = tempAccount.getName().toUpperCase();
 
             tempAccount.setName(theUpperCase);
@@ -57,7 +77,7 @@ public class MyDemoLoggingAspect {
     }
 
     @Before("com.hanniel.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterSetter()")
-    public void beforeAddAccountAdvice(JoinPoint theJoinPoint){
+    public void beforeAddAccountAdvice(JoinPoint theJoinPoint) {
         System.out.println("\n========>>> Executing @Before advice on method");
 
         MethodSignature methodSignature = (MethodSignature) theJoinPoint.getSignature();
@@ -66,10 +86,10 @@ public class MyDemoLoggingAspect {
 
         Object[] args = theJoinPoint.getArgs();
 
-        for (Object tempArgs : args){
+        for (Object tempArgs : args) {
             System.out.println(tempArgs);
 
-            if(tempArgs instanceof Account) {
+            if (tempArgs instanceof Account) {
                 Account theAccount = (Account) tempArgs;
                 System.out.println("account name: " + theAccount.getName());
                 System.out.println("account name: " + theAccount.getLevel());
