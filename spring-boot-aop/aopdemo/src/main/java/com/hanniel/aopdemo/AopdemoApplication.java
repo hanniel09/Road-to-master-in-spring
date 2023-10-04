@@ -12,47 +12,67 @@ import java.util.List;
 @SpringBootApplication
 public class AopdemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AopdemoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AopdemoApplication.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner commandLineRunner(AccountDAO theAccountDAO, MembershipDAO membershipDAO){
-		return runner -> {
+    @Bean
+    public CommandLineRunner commandLineRunner(AccountDAO theAccountDAO, MembershipDAO membershipDAO) {
+        return runner -> {
 //			demoTheBeforeAdvice(theAccountDAO, membershipDAO);
 
-			demoTheAfterReturningAdvice(theAccountDAO);
-		};
-	}
+//			demoTheAfterReturningAdvice(theAccountDAO);
 
-	private void demoTheAfterReturningAdvice(AccountDAO theAccountDAO) {
-		List<Account> theAccounts = theAccountDAO.findAccounts();
+            demoTheAfterThrowingAdvice(theAccountDAO);
+        };
+    }
 
-		System.out.println("\n\nMain program: demoTheAfterReturningAdvice");
-		System.out.println("-----");
+    private void demoTheAfterThrowingAdvice(AccountDAO theAccountDAO) {
+        List<Account> theAccounts = null;
 
-		System.out.println(theAccounts);
+        try {
+            boolean tripWire = true;
+            theAccounts = theAccountDAO.findAccounts(tripWire);
+        } catch (Exception e) {
+            System.out.println("\n\nMain program: ... caught exception: " + e);
+        }
 
-		System.out.println("\n");
-	}
+        System.out.println("\n\nMain program: demoTheAfterReturningAdvice");
+        System.out.println("-----");
 
-	private void demoTheBeforeAdvice(AccountDAO theAccountDAO, MembershipDAO theMembershipDAO) {
-		Account myAccount = new Account();
-		myAccount.setName("Madhu");
-		myAccount.setLevel("Platinum");
+        System.out.println(theAccounts);
 
-		theAccountDAO.addAccount(myAccount, true);
-		theAccountDAO.doWork();
+        System.out.println("\n");
+    }
 
-		theAccountDAO.setName("foobar");
-		theAccountDAO.setServiceCode("silver");
+    private void demoTheAfterReturningAdvice(AccountDAO theAccountDAO) {
+        List<Account> theAccounts = theAccountDAO.findAccounts();
 
-		String name = theAccountDAO.getName();
-		String code = theAccountDAO.getServiceCode();
+        System.out.println("\n\nMain program: demoTheAfterReturningAdvice");
+        System.out.println("-----");
 
-		theMembershipDAO.addSillyMember();
-		theMembershipDAO.goToSleep();
+        System.out.println(theAccounts);
 
-	}
+        System.out.println("\n");
+    }
+
+    private void demoTheBeforeAdvice(AccountDAO theAccountDAO, MembershipDAO theMembershipDAO) {
+        Account myAccount = new Account();
+        myAccount.setName("Madhu");
+        myAccount.setLevel("Platinum");
+
+        theAccountDAO.addAccount(myAccount, true);
+        theAccountDAO.doWork();
+
+        theAccountDAO.setName("foobar");
+        theAccountDAO.setServiceCode("silver");
+
+        String name = theAccountDAO.getName();
+        String code = theAccountDAO.getServiceCode();
+
+        theMembershipDAO.addSillyMember();
+        theMembershipDAO.goToSleep();
+
+    }
 
 }
